@@ -1,0 +1,87 @@
+"backend: tensorflow\nclass_name: Model\nconfig:\n  input_layers:\n  - - input\n \
+  \   - 0\n    - 0\n  layers:\n  - class_name: InputLayer\n    config:\n      batch_input_shape:\
+  \ !!python/tuple\n      - null\n      - 30\n      - 768\n      dtype: float32\n\
+  \      name: input\n      sparse: false\n    inbound_nodes: []\n    name: input\n\
+  \  - class_name: Bidirectional\n    config:\n      dtype: float32\n      layer:\n\
+  \        class_name: LSTM\n        config:\n          activation: tanh\n       \
+  \   activity_regularizer: null\n          bias_constraint: null\n          bias_initializer:\n\
+  \            class_name: Zeros\n            config: {}\n          bias_regularizer:\
+  \ null\n          dropout: 0.0\n          dtype: float32\n          go_backwards:\
+  \ false\n          implementation: 2\n          kernel_constraint: null\n      \
+  \    kernel_initializer:\n            class_name: VarianceScaling\n            config:\n\
+  \              distribution: uniform\n              mode: fan_avg\n            \
+  \  scale: 1.0\n              seed: null\n          kernel_regularizer: null\n  \
+  \        name: lstm_1\n          recurrent_activation: sigmoid\n          recurrent_constraint:\
+  \ null\n          recurrent_dropout: 0.0\n          recurrent_initializer:\n   \
+  \         class_name: Orthogonal\n            config:\n              gain: 1.0\n\
+  \              seed: null\n          recurrent_regularizer: null\n          return_sequences:\
+  \ true\n          return_state: false\n          stateful: false\n          trainable:\
+  \ true\n          unit_forget_bias: true\n          units: 128\n          unroll:\
+  \ false\n          use_bias: true\n      merge_mode: concat\n      name: BiLSTM\n\
+  \      trainable: true\n    inbound_nodes:\n    - - - input\n        - 0\n     \
+  \   - 0\n        - {}\n    name: BiLSTM\n  - class_name: Conv1D\n    config:\n \
+  \     activation: relu\n      activity_regularizer: null\n      bias_constraint:\
+  \ null\n      bias_initializer:\n        class_name: Zeros\n        config: {}\n\
+  \      bias_regularizer: null\n      data_format: channels_last\n      dilation_rate:\
+  \ !!python/tuple\n      - 1\n      dtype: float32\n      filters: 128\n      kernel_constraint:\
+  \ null\n      kernel_initializer:\n        class_name: VarianceScaling\n       \
+  \ config:\n          distribution: uniform\n          mode: fan_avg\n          scale:\
+  \ 1.0\n          seed: null\n      kernel_regularizer: null\n      kernel_size:\
+  \ !!python/tuple\n      - 3\n      name: conv1d_1\n      padding: valid\n      strides:\
+  \ !!python/tuple\n      - 1\n      trainable: true\n      use_bias: true\n    inbound_nodes:\n\
+  \    - - - BiLSTM\n        - 0\n        - 0\n        - {}\n    name: conv1d_1\n\
+  \  - class_name: Conv1D\n    config:\n      activation: relu\n      activity_regularizer:\
+  \ null\n      bias_constraint: null\n      bias_initializer:\n        class_name:\
+  \ Zeros\n        config: {}\n      bias_regularizer: null\n      data_format: channels_last\n\
+  \      dilation_rate: !!python/tuple\n      - 1\n      dtype: float32\n      filters:\
+  \ 128\n      kernel_constraint: null\n      kernel_initializer:\n        class_name:\
+  \ VarianceScaling\n        config:\n          distribution: uniform\n          mode:\
+  \ fan_avg\n          scale: 1.0\n          seed: null\n      kernel_regularizer:\
+  \ null\n      kernel_size: !!python/tuple\n      - 4\n      name: conv1d_2\n   \
+  \   padding: valid\n      strides: !!python/tuple\n      - 1\n      trainable: true\n\
+  \      use_bias: true\n    inbound_nodes:\n    - - - BiLSTM\n        - 0\n     \
+  \   - 0\n        - {}\n    name: conv1d_2\n  - class_name: Conv1D\n    config:\n\
+  \      activation: relu\n      activity_regularizer: null\n      bias_constraint:\
+  \ null\n      bias_initializer:\n        class_name: Zeros\n        config: {}\n\
+  \      bias_regularizer: null\n      data_format: channels_last\n      dilation_rate:\
+  \ !!python/tuple\n      - 1\n      dtype: float32\n      filters: 128\n      kernel_constraint:\
+  \ null\n      kernel_initializer:\n        class_name: VarianceScaling\n       \
+  \ config:\n          distribution: uniform\n          mode: fan_avg\n          scale:\
+  \ 1.0\n          seed: null\n      kernel_regularizer: null\n      kernel_size:\
+  \ !!python/tuple\n      - 5\n      name: conv1d_3\n      padding: valid\n      strides:\
+  \ !!python/tuple\n      - 1\n      trainable: true\n      use_bias: true\n    inbound_nodes:\n\
+  \    - - - BiLSTM\n        - 0\n        - 0\n        - {}\n    name: conv1d_3\n\
+  \  - class_name: MaxPooling1D\n    config:\n      data_format: channels_last\n \
+  \     dtype: float32\n      name: max_pooling1d_1\n      padding: valid\n      pool_size:\
+  \ !!python/tuple\n      - 28\n      strides: !!python/tuple\n      - 28\n      trainable:\
+  \ true\n    inbound_nodes:\n    - - - conv1d_1\n        - 0\n        - 0\n     \
+  \   - {}\n    name: max_pooling1d_1\n  - class_name: MaxPooling1D\n    config:\n\
+  \      data_format: channels_last\n      dtype: float32\n      name: max_pooling1d_2\n\
+  \      padding: valid\n      pool_size: !!python/tuple\n      - 27\n      strides:\
+  \ !!python/tuple\n      - 27\n      trainable: true\n    inbound_nodes:\n    - -\
+  \ - conv1d_2\n        - 0\n        - 0\n        - {}\n    name: max_pooling1d_2\n\
+  \  - class_name: MaxPooling1D\n    config:\n      data_format: channels_last\n \
+  \     dtype: float32\n      name: max_pooling1d_3\n      padding: valid\n      pool_size:\
+  \ !!python/tuple\n      - 26\n      strides: !!python/tuple\n      - 26\n      trainable:\
+  \ true\n    inbound_nodes:\n    - - - conv1d_3\n        - 0\n        - 0\n     \
+  \   - {}\n    name: max_pooling1d_3\n  - class_name: Concatenate\n    config:\n\
+  \      axis: 1\n      dtype: float32\n      name: concatenate_1\n      trainable:\
+  \ true\n    inbound_nodes:\n    - - - max_pooling1d_1\n        - 0\n        - 0\n\
+  \        - &id001 {}\n      - - max_pooling1d_2\n        - 0\n        - 0\n    \
+  \    - *id001\n      - - max_pooling1d_3\n        - 0\n        - 0\n        - *id001\n\
+  \    name: concatenate_1\n  - class_name: AttentionLayer\n    config:\n      dtype:\
+  \ float32\n      name: attention_layer_1\n      trainable: true\n    inbound_nodes:\n\
+  \    - - - concatenate_1\n        - 0\n        - 0\n        - {}\n    name: attention_layer_1\n\
+  \  - class_name: Dropout\n    config:\n      dtype: float32\n      name: Dropout\n\
+  \      noise_shape: null\n      rate: 0.2\n      seed: null\n      trainable: true\n\
+  \    inbound_nodes:\n    - - - attention_layer_1\n        - 0\n        - 0\n   \
+  \     - {}\n    name: Dropout\n  - class_name: Dense\n    config:\n      activation:\
+  \ softmax\n      activity_regularizer: null\n      bias_constraint: null\n     \
+  \ bias_initializer:\n        class_name: Zeros\n        config: {}\n      bias_regularizer:\
+  \ null\n      dtype: float32\n      kernel_constraint: null\n      kernel_initializer:\n\
+  \        class_name: VarianceScaling\n        config:\n          distribution: uniform\n\
+  \          mode: fan_avg\n          scale: 1.0\n          seed: null\n      kernel_regularizer:\
+  \ null\n      name: output\n      trainable: true\n      units: 3\n      use_bias:\
+  \ true\n    inbound_nodes:\n    - - - Dropout\n        - 0\n        - 0\n      \
+  \  - {}\n    name: output\n  name: model_2\n  output_layers:\n  - - output\n   \
+  \ - 0\n    - 0\nkeras_version: 2.3.1\n"
